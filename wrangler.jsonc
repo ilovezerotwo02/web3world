@@ -1,0 +1,28 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "monad-pixel-farm",
+  "compatibility_date": "2026-05-22",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "main": "./worker/index.ts",
+  "assets": {
+    "directory": "dist/client",
+    "not_found_handling": "none",
+    "binding": "ASSETS"
+  },
+  "images": {
+    "binding": "IMAGES"
+  },
+  "vars": {
+    "MONAD_RPC_URL": "https://testnet-rpc.monad.xyz",
+    "BADGE_CONTRACT_ADDRESS": "0xc96a7087cfbbe5eb6f6f81a0905ad7a4d1375a5f"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "monad-pixel-farm-db",
+      "database_id": "0a89a937-d603-479e-b940-9e92371bf0e5"
+    }
+  ]
+}
