@@ -6131,141 +6131,20 @@ input:focus-visible {
   font-style: normal;
 }
 
-/* The security lab is a separate building from the progress workshop. */
+/* The security lab uses a dedicated pixel-art building and a separate walk-up point. */
 .world-security-house {
   position: absolute;
   z-index: 650;
-  width: 182px;
-  height: 142px;
+  width: 244px;
+  height: auto;
   transform: translate(-50%, -100%);
   pointer-events: none;
   image-rendering: pixelated;
-  filter: drop-shadow(7px 9px 0 rgba(18, 10, 25, 0.48));
-}
-
-.security-house-body,
-.security-house-roof,
-.security-house-door,
-.security-house-window,
-.security-house-sign,
-.security-house-lamp {
-  position: absolute;
-  display: block;
-}
-
-.security-house-body {
-  right: 17px;
-  bottom: 0;
-  left: 17px;
-  height: 78px;
-  border: 4px solid #21172c;
-  background:
-    linear-gradient(90deg, transparent 0 12px, rgba(242, 195, 91, 0.15) 12px 16px, transparent 16px 100%),
-    #48304a;
-  box-shadow:
-    inset 0 -8px 0 #2d2037,
-    inset 0 8px 0 rgba(255, 222, 160, 0.1),
-    0 6px 0 #17101f;
-}
-
-.security-house-roof {
-  top: 18px;
-  left: 10px;
-  width: 162px;
-  height: 58px;
-  border: 5px solid #21172c;
-  background:
-    repeating-linear-gradient(135deg, #754b62 0 10px, #5a3855 10px 18px),
-    #613e58;
-  box-shadow:
-    inset 0 7px 0 rgba(255, 221, 151, 0.17),
-    inset 0 -8px 0 rgba(17, 10, 26, 0.4),
-    0 7px 0 #2e1e38;
-  transform: skewX(-18deg);
-}
-
-.security-house-door {
-  bottom: 0;
-  left: 74px;
-  width: 34px;
-  height: 58px;
-  border: 4px solid #21172c;
-  background: #21182e;
-  box-shadow: inset 8px 0 0 rgba(120, 82, 164, 0.35);
-}
-
-.security-house-door::after {
-  position: absolute;
-  right: 5px;
-  top: 28px;
-  width: 6px;
-  height: 6px;
-  background: #f2c35b;
-  box-shadow: 0 0 7px rgba(242, 195, 91, 0.8);
-  content: "";
-}
-
-.security-house-window {
-  top: 82px;
-  width: 27px;
-  height: 24px;
-  border: 4px solid #21172c;
-  background:
-    linear-gradient(90deg, transparent 45%, #21172c 45% 55%, transparent 55%),
-    linear-gradient(0deg, transparent 45%, #21172c 45% 55%, transparent 55%),
-    #8ed8ef;
-  box-shadow: inset 0 0 0 4px rgba(238, 255, 255, 0.3);
-}
-
-.security-house-window-left {
-  left: 31px;
-}
-
-.security-house-window-right {
-  right: 31px;
-}
-
-.security-house-sign {
-  top: 49px;
-  right: 25px;
-  z-index: 2;
-  min-width: 44px;
-  padding: 4px 5px 3px;
-  border: 2px solid #f2c35b;
-  color: #fff0b8;
-  background: #2b1c3c;
-  font-family: "Courier New", monospace;
-  font-size: 9px;
-  font-weight: 900;
-  line-height: 1.05;
-  text-align: center;
-  letter-spacing: 0.04em;
-  box-shadow: 3px 3px 0 #17101f;
-}
-
-.security-house-lamp {
-  top: 70px;
-  right: 11px;
-  width: 9px;
-  height: 9px;
-  border: 2px solid #21172c;
-  background: #f2c35b;
-  box-shadow: 0 0 12px rgba(242, 195, 91, 0.9);
-  animation: security-lamp 1.4s steps(2, end) infinite;
+  filter: drop-shadow(7px 10px 0 rgba(18, 10, 25, 0.48));
 }
 
 .world-security-house.stage-locked {
-  filter: grayscale(0.35) saturate(0.6) brightness(0.78) drop-shadow(7px 9px 0 rgba(18, 10, 25, 0.48));
-}
-
-.world-security-house.stage-fully-powered .security-house-lamp {
-  background: #a8dc9b;
-  box-shadow: 0 0 14px rgba(168, 220, 155, 0.95);
-}
-
-@keyframes security-lamp {
-  0%, 100% { opacity: 0.62; }
-  50% { opacity: 1; }
+  filter: grayscale(0.22) saturate(0.76) brightness(0.82) drop-shadow(7px 10px 0 rgba(18, 10, 25, 0.48));
 }
 
 @keyframes security-pulse {
@@ -6862,6 +6741,686 @@ input:focus-visible {
   background: #bd8a40;
 }
 
+/* --- Standalone Web3 smithy --- */
+
+.world-smithy-house {
+  position: absolute;
+  z-index: 640;
+  width: 184px;
+  height: 144px;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+  image-rendering: pixelated;
+  filter: drop-shadow(7px 9px 0 rgba(18, 10, 25, 0.5));
+}
+
+.smithy-house-body,
+.smithy-house-roof,
+.smithy-house-door,
+.smithy-house-window,
+.smithy-house-chimney,
+.smithy-house-anvil,
+.smithy-house-sign {
+  position: absolute;
+  display: block;
+}
+
+.smithy-house-body {
+  right: 14px;
+  bottom: 0;
+  left: 14px;
+  height: 78px;
+  border: 4px solid #241825;
+  background:
+    repeating-linear-gradient(90deg, #4a3440 0 16px, #594044 16px 20px),
+    #4a3440;
+  box-shadow: inset 0 -9px 0 #2d202d, inset 0 8px 0 rgba(255, 201, 126, 0.12), 0 6px 0 #16101c;
+}
+
+.smithy-house-roof {
+  top: 18px;
+  left: 8px;
+  width: 168px;
+  height: 58px;
+  border: 5px solid #241825;
+  background:
+    repeating-linear-gradient(135deg, #b35f3f 0 10px, #874531 10px 18px),
+    #8e4c36;
+  box-shadow: inset 0 7px 0 rgba(255, 222, 151, 0.2), inset 0 -8px 0 rgba(17, 10, 26, 0.42), 0 7px 0 #342230;
+  transform: skewX(-18deg);
+}
+
+.smithy-house-door {
+  bottom: 0;
+  left: 76px;
+  width: 34px;
+  height: 58px;
+  border: 4px solid #241825;
+  background: #251a2c;
+  box-shadow: inset 8px 0 0 rgba(192, 112, 67, 0.34);
+}
+
+.smithy-house-door::after {
+  position: absolute;
+  top: 28px;
+  right: 5px;
+  width: 6px;
+  height: 6px;
+  background: #f2c35b;
+  box-shadow: 0 0 7px rgba(242, 195, 91, 0.8);
+  content: "";
+}
+
+.smithy-house-window {
+  top: 83px;
+  width: 28px;
+  height: 24px;
+  border: 4px solid #241825;
+  background:
+    linear-gradient(90deg, transparent 45%, #241825 45% 55%, transparent 55%),
+    linear-gradient(0deg, transparent 45%, #241825 45% 55%, transparent 55%),
+    #efaa56;
+  box-shadow: inset 0 0 0 4px rgba(255, 248, 204, 0.24), 0 0 10px rgba(239, 170, 86, 0.3);
+}
+
+.smithy-house-window-left {
+  left: 29px;
+}
+
+.smithy-house-window-right {
+  right: 29px;
+}
+
+.smithy-house-chimney {
+  top: 0;
+  right: 28px;
+  width: 25px;
+  height: 40px;
+  border: 4px solid #241825;
+  background: repeating-linear-gradient(0deg, #6f3d3b 0 9px, #8e4e42 9px 14px);
+  box-shadow: 0 -6px 0 -1px #241825;
+}
+
+.smithy-house-chimney::after {
+  position: absolute;
+  top: -22px;
+  left: 4px;
+  width: 11px;
+  height: 18px;
+  background: rgba(224, 213, 196, 0.3);
+  box-shadow: 10px -7px 0 rgba(224, 213, 196, 0.2);
+  content: "";
+  animation: smithy-smoke 2.4s steps(3, end) infinite;
+}
+
+.smithy-house-anvil {
+  bottom: 10px;
+  left: 9px;
+  width: 32px;
+  height: 16px;
+  border: 4px solid #241825;
+  background: #77909b;
+  box-shadow: inset 0 -5px 0 #435661, 9px 9px 0 -5px #241825;
+}
+
+.smithy-house-sign {
+  top: 52px;
+  right: 26px;
+  z-index: 2;
+  min-width: 50px;
+  padding: 4px 5px 3px;
+  border: 2px solid #f2c35b;
+  color: #fff0b8;
+  background: #302039;
+  font-family: "Courier New", monospace;
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1.05;
+  text-align: center;
+  letter-spacing: 0.04em;
+  box-shadow: 3px 3px 0 #17101f;
+}
+
+@keyframes smithy-smoke {
+  0%, 100% { opacity: 0.1; transform: translate(0, 5px); }
+  50% { opacity: 0.6; transform: translate(5px, -2px); }
+}
+
+.smithy-panel {
+  gap: 16px;
+}
+
+.smithy-hero {
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  border: var(--pixel) solid rgba(242, 195, 91, 0.7);
+  background:
+    linear-gradient(135deg, rgba(181, 91, 54, 0.24), rgba(31, 24, 38, 0.9)),
+    #211a26;
+  box-shadow: 4px 4px 0 rgba(13, 8, 18, 0.28);
+}
+
+.smithy-hero > div:nth-child(2) {
+  min-width: 0;
+}
+
+.smithy-hero > div:nth-child(2) > span,
+.smithy-recipes header span,
+.smithy-equipment-rack header span {
+  color: #f2c35b;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.smithy-hero h1 {
+  margin: 4px 0;
+  color: #fff1d7;
+  font-size: 23px;
+}
+
+.smithy-hero p {
+  max-width: 66ch;
+  margin: 0;
+  color: #d8c8ca;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.smithy-anvil {
+  position: relative;
+  width: 76px;
+  height: 68px;
+  border: 4px solid #241825;
+  background: #718b94;
+  box-shadow: inset 0 -11px 0 #43545c, 5px 5px 0 #15101b;
+}
+
+.smithy-anvil::before {
+  position: absolute;
+  top: 12px;
+  left: -15px;
+  width: 29px;
+  height: 20px;
+  border: 4px solid #241825;
+  background: #8da7aa;
+  content: "";
+}
+
+.smithy-anvil::after {
+  position: absolute;
+  right: 7px;
+  top: -27px;
+  width: 9px;
+  height: 33px;
+  border: 4px solid #241825;
+  background: #c47845;
+  content: "";
+  transform: rotate(21deg);
+}
+
+.smithy-anvil span,
+.smithy-anvil i,
+.smithy-anvil b {
+  position: absolute;
+  display: block;
+}
+
+.smithy-anvil span {
+  right: 14px;
+  top: 8px;
+  width: 10px;
+  height: 10px;
+  background: #ffe298;
+  box-shadow: 0 0 14px #f2c35b;
+}
+
+.smithy-anvil i {
+  left: 24px;
+  bottom: -25px;
+  width: 18px;
+  height: 27px;
+  border: 4px solid #241825;
+  background: #586d75;
+}
+
+.smithy-anvil b {
+  right: 10px;
+  bottom: -25px;
+  width: 18px;
+  height: 27px;
+  border: 4px solid #241825;
+  background: #586d75;
+}
+
+.smithy-score {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 0 4px;
+  min-width: 76px;
+  padding: 10px;
+  border: 1px solid rgba(242, 195, 91, 0.58);
+  background: rgba(35, 24, 36, 0.78);
+  text-align: center;
+}
+
+.smithy-score b {
+  color: #f2c35b;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.smithy-score span {
+  align-self: end;
+  color: #d8c8ca;
+  font-size: 12px;
+}
+
+.smithy-score small {
+  grid-column: 1 / -1;
+  color: #b9aab6;
+  font-size: 10px;
+}
+
+.smithy-workbench {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.8fr) minmax(0, 1.4fr);
+  gap: 14px;
+}
+
+.smithy-recipes,
+.smithy-question,
+.smithy-equipment-rack {
+  border: 1px solid rgba(164, 134, 255, 0.42);
+  background: rgba(23, 18, 34, 0.76);
+  box-shadow: 3px 3px 0 rgba(13, 8, 18, 0.2);
+}
+
+.smithy-recipes {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  padding: 12px;
+}
+
+.smithy-recipes header,
+.smithy-equipment-rack > header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.smithy-recipes header {
+  padding: 0 2px 6px;
+}
+
+.smithy-recipes header b {
+  color: #fff1d7;
+  font-size: 12px;
+}
+
+.smithy-recipe {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  gap: 9px;
+  align-items: center;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid rgba(203, 183, 220, 0.2);
+  color: #e4dce4;
+  background: rgba(15, 12, 23, 0.55);
+  text-align: left;
+  cursor: pointer;
+}
+
+.smithy-recipe:hover,
+.smithy-recipe.is-selected {
+  border-color: #f2c35b;
+  background: rgba(106, 62, 54, 0.28);
+}
+
+.smithy-recipe.is-forged {
+  border-color: rgba(168, 220, 155, 0.7);
+}
+
+.smithy-recipe > span {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.smithy-recipe b,
+.smithy-equipped-slot b,
+.smithy-inventory-item b {
+  overflow: hidden;
+  color: #fff1d7;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.smithy-recipe small,
+.smithy-equipped-slot small,
+.smithy-inventory-item small {
+  overflow: hidden;
+  color: #b9aab6;
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.smithy-recipe > i {
+  color: #f2c35b;
+  font-size: 13px;
+  font-style: normal;
+}
+
+.smithy-question {
+  display: grid;
+  align-content: start;
+  gap: 9px;
+  padding: 14px;
+}
+
+.smithy-question.is-correct {
+  border-color: #a8dc9b;
+}
+
+.smithy-question.is-wrong {
+  border-color: #d78775;
+}
+
+.smithy-question-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.smithy-question-head span {
+  color: #d6a5ff;
+  font-size: 10px;
+}
+
+.smithy-question-head b {
+  color: #f2c35b;
+  font-size: 10px;
+}
+
+.smithy-question > h2 {
+  margin: -1px 0 0;
+  color: #fff1d7;
+  font-size: 19px;
+}
+
+.smithy-question > p {
+  margin: 0;
+  color: #cdbdc9;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.smithy-question-copy {
+  display: grid;
+  gap: 5px;
+  padding: 10px;
+  border-left: 3px solid #f2c35b;
+  background: rgba(111, 70, 58, 0.23);
+}
+
+.smithy-question-copy b {
+  color: #fff1d7;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.smithy-question-copy small {
+  color: #c4b4bf;
+  font-size: 10px;
+}
+
+.smithy-options {
+  display: grid;
+  gap: 6px;
+}
+
+.smithy-options button {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 9px;
+  border: 1px solid rgba(203, 183, 220, 0.22);
+  color: #e4dce4;
+  background: rgba(12, 9, 19, 0.52);
+  text-align: left;
+  font-size: 10px;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.smithy-options button:hover,
+.smithy-options button.is-selected {
+  border-color: #a98fff;
+  background: rgba(124, 92, 255, 0.2);
+}
+
+.smithy-options button span {
+  flex: 0 0 auto;
+  color: #f2c35b;
+}
+
+.smithy-forged-note {
+  display: grid;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid rgba(168, 220, 155, 0.55);
+  background: rgba(81, 125, 78, 0.16);
+}
+
+.smithy-forged-note b {
+  color: #c8efbb;
+  font-size: 12px;
+}
+
+.smithy-forged-note small {
+  color: #c1d8bd;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.smithy-equipment-rack {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.smithy-equipment-rack h2 {
+  margin: 4px 0 0;
+  color: #fff1d7;
+  font-size: 18px;
+}
+
+.smithy-equipment-rack > header > small {
+  color: #b9aab6;
+  font-size: 10px;
+}
+
+.smithy-equipped-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.smithy-equipped-slot {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 6px 9px;
+  align-items: center;
+  min-width: 0;
+  padding: 9px;
+  border: 1px solid rgba(203, 183, 220, 0.19);
+  background: rgba(12, 9, 19, 0.45);
+}
+
+.smithy-equipped-slot.is-equipped {
+  border-color: rgba(242, 195, 91, 0.62);
+}
+
+.smithy-slot-label {
+  grid-column: 1 / -1;
+  color: #f2c35b;
+  font-size: 9px;
+}
+
+.smithy-equipped-slot > div {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.smithy-equipped-slot > .pixel-button {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.smithy-empty-slot {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px dashed rgba(203, 183, 220, 0.3);
+  color: #8e7e91;
+  font-size: 10px;
+}
+
+.smithy-inventory {
+  display: grid;
+  gap: 6px;
+}
+
+.smithy-inventory-item {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  gap: 9px;
+  align-items: center;
+  padding: 7px;
+  border-top: 1px solid rgba(203, 183, 220, 0.14);
+}
+
+.smithy-inventory-item > span {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+/* Pixel equipment silhouettes, intentionally original instead of copying a game sprite. */
+.forge-item-art {
+  position: relative;
+  display: block;
+  width: 62px;
+  height: 58px;
+  margin: 0 auto;
+  image-rendering: pixelated;
+}
+
+.forge-item-art.is-compact {
+  width: 38px;
+  height: 38px;
+}
+
+.forge-item-art i,
+.forge-item-art b {
+  position: absolute;
+  display: block;
+}
+
+.forge-helm::before,
+.forge-helm::after,
+.forge-chest::before,
+.forge-chest::after,
+.forge-pickaxe::before,
+.forge-pickaxe::after {
+  position: absolute;
+  content: "";
+}
+
+.forge-helm::before {
+  top: 10px;
+  left: 10px;
+  width: 42px;
+  height: 31px;
+  border: 4px solid #231726;
+  background: #7c55cf;
+  box-shadow: inset 0 -9px 0 #4c348d, 5px 5px 0 #f2c35b;
+}
+
+.forge-helm::after {
+  top: 27px;
+  left: 14px;
+  width: 35px;
+  height: 8px;
+  border: 3px solid #231726;
+  background: #8ed8ef;
+}
+
+.forge-chest::before {
+  top: 8px;
+  left: 12px;
+  width: 38px;
+  height: 42px;
+  border: 4px solid #231726;
+  background: #4f8a9c;
+  box-shadow: inset 0 -11px 0 #2f586c, 6px 6px 0 #f2c35b;
+}
+
+.forge-chest::after {
+  top: 13px;
+  left: 29px;
+  width: 6px;
+  height: 32px;
+  background: #dce8e7;
+  box-shadow: 0 0 0 3px #231726;
+}
+
+.forge-pickaxe::before {
+  top: 26px;
+  left: 29px;
+  width: 9px;
+  height: 35px;
+  border: 3px solid #231726;
+  background: #a66a45;
+  transform: rotate(39deg);
+}
+
+.forge-pickaxe::after {
+  top: 7px;
+  left: 8px;
+  width: 43px;
+  height: 11px;
+  border: 4px solid #231726;
+  background: #b8d1ce;
+  transform: rotate(-24deg);
+}
+
+.forge-item-art i {
+  right: 3px;
+  bottom: 5px;
+  width: 7px;
+  height: 7px;
+  background: #f2c35b;
+  box-shadow: 0 0 9px rgba(242, 195, 91, 0.8);
+}
+
+.forge-item-art.is-compact i {
+  right: 0;
+  bottom: 0;
+  width: 5px;
+  height: 5px;
+}
+
 @media (max-width: 900px) {
   .world-clock {
     min-width: 0;
@@ -6878,5 +7437,18 @@ input:focus-visible {
 
   .web3-security-module-foot .pixel-button {
     width: 100%;
+  }
+
+  .smithy-hero,
+  .smithy-workbench {
+    grid-template-columns: 1fr;
+  }
+
+  .smithy-anvil {
+    margin: 0 auto;
+  }
+
+  .smithy-equipped-grid {
+    grid-template-columns: 1fr;
   }
 }

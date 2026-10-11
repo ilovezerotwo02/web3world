@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="240" viewBox="0 0 320 240" shape-rendering="crispEdges" role="img" aria-labelledby="title desc">
+  <title id="title">Web3 安全训练场</title>
+  <desc id="desc">带有安全标志、监控窗和链上训练终端的像素房屋</desc>
+
+  <path d="M28 203h264v13H28z" fill="#171521"/>
+  <path d="M40 193h240v15H40z" fill="#28303a"/>
+  <path d="M48 184h224v19H48z" fill="#4d5260"/>
+  <path d="M55 176h210v18H55z" fill="#353946"/>
+
+  <path d="M21 101 151 25l148 75-17 23L151 57 39 124z" fill="#171521"/>
+  <path d="m32 96 119-66 137 69-14 13L151 50 45 111z" fill="#704c46"/>
+  <path d="m48 89 103-57 119 62-17 9-102-52L62 101z" fill="#9b6249"/>
+  <path d="m70 77 81-45 95 50-12 7-83-42-70 39z" fill="#b77954"/>
+  <path d="m56 97 15-8v17l-15 9zm35-19 15-8v18l-15 9zm37-20 15-8v18l-15 9zm38-20 15-8v18l-15 9zm38 21 15-8v18l-15 9zm37 20 15-8v18l-15 9z" fill="#d18a58" opacity=".8"/>
+  <path d="M31 107 46 99v87H31z" fill="#3c3040"/>
+  <path d="M46 98h228v91H46z" fill="#604052"/>
+  <path d="M56 108h208v81H56z" fill="#704a4b"/>
+  <path d="M57 111h205v8H57z" fill="#9a6853"/>
+  <path d="M57 180h205v9H57z" fill="#3a2b39"/>
+  <path d="M58 128h40v36H58z" fill="#252635"/>
+  <path d="M63 133h30v25H63z" fill="#84c8c5"/>
+  <path d="M67 137h22v4H67zm0 8h15v4H67z" fill="#c7f4df"/>
+  <path d="M222 128h40v36H222z" fill="#252635"/>
+  <path d="M227 133h30v25H227z" fill="#73b5c4"/>
+  <path d="M231 137h22v4H231zm0 8h15v4H231z" fill="#b8f2e2"/>
+  <path d="M113 121h76v72h-76z" fill="#251f2c"/>
+  <path d="M120 128h62v65h-62z" fill="#3a2d3d"/>
+  <path d="M129 137h44v56h-44z" fill="#242536"/>
+  <path d="M134 142h34v45h-34z" fill="#3d4f63"/>
+  <path d="M145 162h10v7h-10z" fill="#efc45e"/>
+  <path d="M150 142h4v45h-4z" fill="#28384d"/>
+  <path d="M128 187h47v6h-47z" fill="#171521"/>
+
+  <path d="M99 76h105v35H99z" fill="#171521"/>
+  <path d="M105 81h93v25h-93z" fill="#2c2741"/>
+  <path d="M111 86h81v15h-81z" fill="#e1b45b"/>
+  <text x="151.5" y="96" text-anchor="middle" fill="#2b2031" font-family="Courier New, monospace" font-size="11" font-weight="900">WEB3 SEC</text>
+  <path d="M136 88h8v8h-8zm17 0h8v8h-8z" fill="#7652b8"/>
+
+  <path d="M75 188h34v10H75z" fill="#242536"/>
+  <path d="M80 181h24v7H80z" fill="#6b7d89"/>
+  <path d="M83 177h18v6H83z" fill="#c9a55b"/>
+  <path d="M82 177h20v3H82z" fill="#e6c878"/>
+
+  <path d="M270 64h16v37h-16z" fill="#262331"/>
+  <path d="M274 58h8v10h-8z" fill="#9c6d58"/>
+  <path d="M274 44h8v14h-8z" fill="#3e374a"/>
+  <path d="M276 32h4v12h-4z" fill="#6d7084"/>
+  <path d="M278 24h3v8h-3z" fill="#c8d3db"/>
+
+  <path d="M194 116h19v15h-19z" fill="#171521"/>
+  <path d="M198 119h11v8h-11z" fill="#7cddcb"/>
+  <path d="M201 121h5v4h-5z" fill="#e8f7d6"/>
+  <path d="M206 127h5v4h-5z" fill="#e9bd5e"/>
+
+  <path d="M106 198h108v7H106z" fill="#171521"/>
+  <path d="M116 205h87v5h-87z" fill="#6c5361"/>
+  <path d="M69 205h31v5H69zm153 0h28v5h-28z" fill="#8b6a55"/>
+</svg>

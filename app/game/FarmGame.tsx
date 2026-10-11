@@ -61,6 +61,7 @@ import {
 } from "./exploration";
 import { FARM_MUSIC_STORAGE_KEY, useFarmMusic } from "./useFarmMusic";
 import { FishingPanel } from "./FishingPanel";
+import { SmithyPanel } from "./SmithyPanel";
 import { TitleScreen } from "./TitleScreen";
 import { monadCropAssetForStage, type LedgerStarCropStage } from "./field-assets";
 import { SecurityGreenhousePanel } from "./security/SecurityGreenhousePanel";
@@ -87,6 +88,13 @@ import {
   readStoredFishingProgress,
   type FishingProgress,
 } from "./fishing";
+import {
+  FORGE_STORAGE_KEY,
+  forgeReducer,
+  initialForgeState,
+  readStoredForgeState,
+  type ForgeState,
+} from "./forge";
 
 type View = "home" | "profile" | SceneDestination;
 type ActiveCourse = "web3" | "monad" | "contract";
@@ -396,6 +404,7 @@ function mapPreviewView(name: string | null): View | null {
     "seed-shop": "seeds",
     fishing: "fishing",
     "fish-book": "fishing",
+    smithy: "smithy",
     security: "security",
     "security-report": "security-report",
   };
@@ -408,6 +417,7 @@ export function FarmGame() {
   const [contractProgress, contractDispatch] = useReducer(contractProgressReducer, initialContractProgress);
   const [securityProgress, securityDispatch] = useReducer(securityProgressReducer, initialSecurityProgress);
   const [fishingProgress, setFishingProgress] = useState<FishingProgress>(initialFishingProgress);
+  const [forgeState, setForgeState] = useState<ForgeState>(initialForgeState);
   const [activeCourse, setActiveCourse] = useState<ActiveCourse>("web3");
   const [view, setView] = useState<View>("home");
   const [entryScreen, setEntryScreen] = useState<EntryScreen>("title");
@@ -508,6 +518,13 @@ export function FarmGame() {
             });
           }
         }
+        if (previewName === "smithy") {
+          setForgeState({
+            unlocked: ["ledger-helm"],
+            equipped: { head: "ledger-helm", body: null, tool: null },
+            answered: 1,
+          });
+        }
         if (presetView) setView(presetView);
         setHydrated(true);
         return;
@@ -516,13 +533,16 @@ export function FarmGame() {
       const storedMonad = readStoredMonadProgress(window.localStorage.getItem(MONAD_PROGRESS_STORAGE_KEY));
       const storedContract = readStoredContractProgress(window.localStorage.getItem(CONTRACT_PROGRESS_STORAGE_KEY));
       const storedFishing = readStoredFishingProgress(window.localStorage.getItem(FISHING_STORAGE_KEY));
+      const storedForge = readStoredForgeState(window.localStorage.getItem(FORGE_STORAGE_KEY));
       setHasSavedJourney(
         stored.started ||
         storedMonad.started ||
         storedContract.started ||
-        storedFishing.totalCatches > 0,
+        storedFishing.totalCatches > 0 ||
+        storedForge.unlocked.length > 0,
       );
       setFishingProgress(storedFishing);
+      setForgeState(storedForge);
       dispatch({ type: "reset" });
       if (stored.started) dispatch({ type: "start-course" });
       if (stored.landCleared) dispatch({ type: "clear-land" });
@@ -625,6 +645,11 @@ export function FarmGame() {
 
   useEffect(() => {
     if (!hydrated || previewMode) return;
+    window.localStorage.setItem(FORGE_STORAGE_KEY, JSON.stringify(forgeState));
+  }, [forgeState, hydrated, previewMode]);
+
+  useEffect(() => {
+    if (!hydrated || previewMode) return;
     window.localStorage.setItem(SECURITY_PROGRESS_STORAGE_KEY, JSON.stringify(securityProgress));
   }, [hydrated, previewMode, securityProgress]);
 
@@ -710,6 +735,7 @@ export function FarmGame() {
     "fishing-pond": "fishing",
     "course-fields": "land",
     "progress-workshop": workshopDestination,
+    smithy: "smithy",
     "security-greenhouse": "security",
   };
   const portalStatuses: Record<PortalId, string> = {
@@ -724,6 +750,7 @@ export function FarmGame() {
     "progress-workshop": activeProgress.challengePassed.every(Boolean)
       ? activeProgress.verification === "passed" ? "验证已完成" : "开始最终验证"
       : "章节挑战",
+    smithy: `${forgeState.unlocked.length}/3 件装备 · 知识锻造`,
     "security-greenhouse": securityStage === "locked"
       ? "废弃温室 · 完成课程后解锁"
       : `Web3 安全训练场 · ${GREENHOUSE_STAGE_COPY[securityStage].label}`,
@@ -740,6 +767,8 @@ export function FarmGame() {
             ? { icon: "≈", location: "回执池塘", detail: `${fishingProgress.totalCatches} 次垂钓 · 图鉴 ${unlockedFishCount}/${FISH_SPECIES.length}` }
           : view === "land"
             ? { icon: "⌁", location: "课程土地", detail: `第 ${activeCourseOrder} 格 · ${FIELD_STAGE_LABELS[fieldVisualStage(activeProgress)]}` }
+            : view === "smithy"
+              ? { icon: "⚒", location: "铁匠铺", detail: `${forgeState.unlocked.length}/3 件装备已锻造` }
             : view === "challenge"
               ? { icon: "◆", location: "进步工坊", detail: `第 ${challengeChapter + 1} 章挑战` }
               : view === "verification"
@@ -753,6 +782,8 @@ export function FarmGame() {
     ? `图鉴 ${unlockedFishCount}/${FISH_SPECIES.length}`
     : view === "security" || view === "security-report"
       ? GREENHOUSE_STAGE_COPY[securityStage].label
+      : view === "smithy"
+        ? `${forgeState.unlocked.length}/3 件装备`
       : FIELD_STAGE_LABELS[fieldVisualStage(activeProgress)];
 
   function navigate(nextView: View, chapter?: number) {
@@ -774,6 +805,7 @@ export function FarmGame() {
     if (nextView === "seeds") return "seed-shop";
     if (nextView === "fishing") return "fishing-pond";
     if (nextView === "land") return "course-fields";
+    if (nextView === "smithy") return "smithy";
     if (nextView === "security" || nextView === "security-report") return "security-greenhouse";
     return "progress-workshop";
   }
@@ -952,6 +984,7 @@ export function FarmGame() {
     window.localStorage.removeItem(MONAD_PROGRESS_STORAGE_KEY);
     window.localStorage.removeItem(CONTRACT_PROGRESS_STORAGE_KEY);
     window.localStorage.removeItem(FISHING_STORAGE_KEY);
+    window.localStorage.removeItem(FORGE_STORAGE_KEY);
     window.localStorage.removeItem(SCENE_STORAGE_KEY);
     window.localStorage.removeItem(FARM_MUSIC_STORAGE_KEY);
     window.localStorage.removeItem(SECURITY_PROGRESS_STORAGE_KEY);
@@ -960,6 +993,7 @@ export function FarmGame() {
     setView("home");
     setActiveCourse("web3");
     setFishingProgress(initialFishingProgress);
+    setForgeState(initialForgeState);
     setHasSavedJourney(false);
     setResetToken((value) => value + 1);
     setQuizAnswers({});
@@ -1124,6 +1158,13 @@ export function FarmGame() {
                 onOpenSecurity={() => setView("security")}
               />
             )}
+            {view === "smithy" && (
+              <SmithyPanel
+                state={forgeState}
+                dispatch={(action) => setForgeState((state) => forgeReducer(state, action))}
+                onMessage={showToast}
+              />
+            )}
             {view === "land" && (
                activeCourse === "web3" ? (
                 <LandPanel
@@ -1283,7 +1324,8 @@ export function FarmGame() {
         <button className={view === "courses" || view === "chapter" ? "active" : ""} onClick={() => travelTo("courses")}><span>▤</span>知识塔</button>
         <button className={view === "fishing" ? "active" : ""} onClick={() => travelTo("fishing")}><span>≈</span>回执池塘</button>
         <button className={view === "seeds" ? "active" : ""} onClick={() => travelTo("seeds")}><span>✦</span>种子小铺</button>
-        <button className={view === "challenge" || view === "verification" || view === "quiz" || view === "harvest" || view === "security" || view === "security-report" ? "active" : ""} onClick={() => travelTo(workshopDestination)}><span>◆</span>进步工坊</button>
+        <button className={view === "smithy" ? "active" : ""} onClick={() => travelTo("smithy")}><span>⚒</span>铁匠铺</button>
+        <button className={view === "challenge" || view === "verification" || view === "quiz" || view === "harvest" ? "active" : ""} onClick={() => travelTo(workshopDestination)}><span>◆</span>进步工坊</button>
       </nav>
 
       {toast && <ToastNotice key={toast.id} toast={toast} onDismiss={dismissToast} />}

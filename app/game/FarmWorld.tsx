@@ -22,7 +22,8 @@ import {
   normalizeMovement,
   portalWithinReach,
   readStoredSceneState,
-  SECURITY_GREENHOUSE_ENTRY,
+  SMITHY_ENTRY,
+  SECURITY_GREENHOUSE_BUILDING,
   SECURITY_GREENHOUSE_MARKER,
   type Direction,
   type PortalId,
@@ -492,24 +493,32 @@ export function FarmWorld({
             transitioning={fieldTransitioning}
           />
           {securityStage && (
-            <div
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
               className={`world-security-house stage-${securityStage}`}
+              src="/art/security-training-house.svg"
+              alt="Web3 安全训练场独立像素房屋"
               style={{
-                left: SECURITY_GREENHOUSE_ENTRY.x,
-                top: SECURITY_GREENHOUSE_ENTRY.y,
+                left: SECURITY_GREENHOUSE_BUILDING.x,
+                top: SECURITY_GREENHOUSE_BUILDING.y,
               }}
-              role="img"
-              aria-label="Web3 安全训练场独立安全屋"
-            >
-              <span className="security-house-roof" />
-              <span className="security-house-body" />
-              <span className="security-house-door" />
-              <span className="security-house-window security-house-window-left" />
-              <span className="security-house-window security-house-window-right" />
-              <span className="security-house-sign">WEB3<br />SEC</span>
-              <i className="security-house-lamp" />
-            </div>
+            />
           )}
+          <div
+            className="world-smithy-house"
+            style={{ left: SMITHY_ENTRY.x, top: SMITHY_ENTRY.y }}
+            role="img"
+            aria-label="铁匠铺像素房屋，回答 Web3 知识锻造装备"
+          >
+            <span className="smithy-house-roof" />
+            <span className="smithy-house-body" />
+            <span className="smithy-house-door" />
+            <span className="smithy-house-window smithy-house-window-left" />
+            <span className="smithy-house-window smithy-house-window-right" />
+            <span className="smithy-house-chimney" />
+            <span className="smithy-house-anvil" />
+            <span className="smithy-house-sign">IRON<br />WEB3</span>
+          </div>
           <div className={`world-time-overlay phase-${worldClock.phase}`} aria-hidden="true" />
           <div className={`world-stars phase-${worldClock.phase}`} aria-hidden="true" />
           <div className="world-vignette" />
@@ -543,7 +552,7 @@ export function FarmWorld({
               }}
               aria-label={`${portal.label}：${portalStatuses[portal.id]}`}
             >
-              <span>{portal.id === "knowledge-tower" ? "▤" : portal.id === "seed-shop" ? "✦" : portal.id === "fishing-pond" ? "≈" : portal.id === "course-fields" ? "⌁" : portal.id === "security-greenhouse" ? "❖" : "◆"}</span>
+              <span>{portal.id === "knowledge-tower" ? "▤" : portal.id === "seed-shop" ? "✦" : portal.id === "fishing-pond" ? "≈" : portal.id === "course-fields" ? "⌁" : portal.id === "smithy" ? "⚒" : portal.id === "security-greenhouse" ? "❖" : "◆"}</span>
               <span className="portal-copy"><b>{portal.label}</b><small>{portalStatuses[portal.id]}</small></span>
             </button>
           ))}

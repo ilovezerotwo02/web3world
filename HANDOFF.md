@@ -1,7 +1,8 @@
-# 交接文档（HANDOFF）— Monad Guardian Farm 安全升级
+# 交接文档（HANDOFF）— web3world 安全升级
 
 > 本文档给下一个接手开发的 AI / 开发者。
 > 当前版本已完成规划文档《Monad像素农场_Web3安全升级与获奖规划_v2.0_黑客松冲奖版》中 **P0 全部条目**，
+> 并补齐 Web3 安全训练场地图建筑、60 秒昼夜循环与铁匠铺装备核心，
 > 并已通过 lint / build / 全量测试 / 本地端到端验收。
 
 ---
@@ -11,11 +12,12 @@
 | 项目 | 路径 |
 | --- | --- |
 | **改造后的项目（在这里继续）** | `E:\c逆向\pwn_test\farm_src\web3-learn-farm-main` |
+| **公开 GitHub 仓库** | `https://github.com/ilovezerotwo02/web3world` |
 | 打包好的交付 zip | `E:\c逆向\pwn_test\farmsrcgpt\web3-learn-farm-guardian-web-security-20261011.zip`（不含 node_modules / dist / .wrangler） |
 | 原始 zip（未改动） | `E:\c逆向\pwn_test\web3-learn-farm-main.zip` |
 | 规划文档 | `D:\下载\例题\Monad像素农场_Web3安全升级与获奖规划_v2.0_黑客松冲奖版.md` |
 
-**约定**：不要推翻现有结构，继续做增量升级；本仓库在此基础上新增了 "Monad Guardian Farm" 安全温室层。
+**约定**：不要推翻现有结构，继续做增量升级；项目对外名称为 `web3world`，保留原有课程并继续扩展安全训练玩法。
 
 ## 2. 技术栈与运行环境
 
@@ -33,7 +35,7 @@ npx wrangler d1 execute monad-pixel-farm-db --local --file=scripts/init-d1.sql
 
 npm run dev                    # http://localhost:3000
 npm run lint                   # 必须为 0 error
-npm test                       # 先 build 再跑全部测试（当前 191 项全绿）
+npm test                       # 先 build 再跑全部测试（当前 199 项全绿）
 npm run contract:compile       # 徽章合约 + 教学靶场合约
 npm run security:verify        # 安全流程端到端验收（需要 dev server + token，见 §6）
 ```
@@ -54,6 +56,8 @@ npm run security:verify        # 安全流程端到端验收（需要 dev server
 | G | Security Passport（NFT typeId 3，Soulbound） | `SecurityPassportPanel.tsx`、`lib/security/passport.ts`、`app/api/nft/route.ts`、`app/api/nft/metadata/[typeId]/route.ts` |
 | H | D1 持久化（security_sessions / findings / reports / tx_risk_checks / agent_policies） | `db/schema.ts`、`drizzle/0003_security_lab.sql`、`scripts/init-d1.sql`、`lib/repositories.ts` |
 | I | 测试（新增 71 项安全测试 + 原 117 项全部保留） | `tests/security-*.test.mjs` |
+| J | 地图 Web3 安全训练场独立像素建筑、独立入口与碰撞带 | `public/art/security-training-house.svg`、`app/game/FarmWorld.tsx`、`app/game/exploration.ts` |
+| K | 铁匠铺三件装备、三道知识题、解锁与穿脱装备 | `app/game/SmithyPanel.tsx`、`app/game/forge.ts` |
 
 ### 安全核心库（纯函数，可单测）
 
@@ -93,10 +97,10 @@ GET  /api/chain/tx|receipt?hash=          需登录（真实 Monad Testnet 读�
 | 验证项 | 结果 |
 | --- | --- |
 | `npm run lint` | 通过 |
-| `npm test`（build + 全部测试） | **191 / 191 通过** |
+| `npm test`（build + 全部测试） | **199 / 199 通过** |
 | `npm run contract:compile` | Badge ABI 生成（57 项）；PatchedBank / VulnerableBank 编译通过 |
 | 本地 D1 | 使用独立临时持久化目录初始化和验收，未重置项目已有 `.wrangler` 数据 |
-| 本地运行 | `http://127.0.0.1:3001/` 首页 HTTP 200；安全场景 API HTTP 200 |
+| 本地运行 | `http://127.0.0.1:3001/` 首页 HTTP 200；地图可见 Web3 安全训练场和铁匠铺 |
 | 浏览器检查 | 安全温室、Web 安全训练场与 SignGuard 页面可用；XSS 题目答对显示 `VERIFY PASS`；控制台无错误 |
 | 端到端验收 `npm run security:verify` | **25 / 25 通过**，包括 4 个 Lab、Final Audit、报告权限、SignGuard 与 FarmBot |
 | 真实链上 | 本轮未发起真实交易或链上 RPC 验收；所有端到端请求均为本地教学数据 |

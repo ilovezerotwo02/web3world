@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   SCENE_PORTALS,
+  SECURITY_GREENHOUSE_BUILDING,
   SECURITY_GREENHOUSE_ENTRY,
   SECURITY_GREENHOUSE_MARKER,
   SPAWN_POINT,
@@ -47,6 +48,7 @@ test("Web3 安全训练场在地图上有独立入口，并且入口可达", () 
   assert.equal(security?.label, "Web3 安全训练场");
   assert.deepEqual(security?.position, SECURITY_GREENHOUSE_ENTRY);
   assert.deepEqual(security?.markerPosition, SECURITY_GREENHOUSE_MARKER);
+  assert.notDeepEqual(SECURITY_GREENHOUSE_BUILDING, SECURITY_GREENHOUSE_ENTRY);
   assert.equal(canStand(security.position), true);
   assert.ok(findPath(SPAWN_POINT, security.position).length >= 2);
 });
@@ -56,7 +58,8 @@ test("Web3 安全训练场使用独立房屋模型，不复用进步工坊入口
     fs.readFile(new URL("../app/game/FarmWorld.tsx", import.meta.url), "utf8"),
   );
   assert.match(source, /world-security-house/);
-  assert.match(source, /SECURITY_GREENHOUSE_ENTRY/);
+  assert.match(source, /security-training-house\.svg/);
+  assert.match(source, /SECURITY_GREENHOUSE_BUILDING/);
   assert.notEqual(
     SECURITY_GREENHOUSE_ENTRY.x,
     SCENE_PORTALS.find((portal) => portal.id === "progress-workshop")?.position.x,
