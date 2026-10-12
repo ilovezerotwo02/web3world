@@ -5,6 +5,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type CSSProperties,
   type MouseEvent as ReactMouseEvent,
 } from "react";
 import {
@@ -22,9 +23,8 @@ import {
   normalizeMovement,
   portalWithinReach,
   readStoredSceneState,
-  SMITHY_ENTRY,
+  SMITHY_BUILDING,
   SECURITY_GREENHOUSE_BUILDING,
-  SECURITY_GREENHOUSE_MARKER,
   type Direction,
   type PortalId,
   type SceneDestination,
@@ -32,7 +32,10 @@ import {
   type WorldPoint,
 } from "./exploration";
 import { CourseFieldLayer } from "./FieldVisuals";
+import { SecurityTrainingHouse3D } from "./SecurityTrainingHouse3D";
+import { cancelFrame, requestFrame } from "./animation-frame";
 import type { FieldVisualStage } from "./progress";
+import type { GreenhouseStage } from "./security/types";
 import type { WorldClock } from "./world-clock";
 
 export type WorldTravelRequest = {
@@ -54,7 +57,7 @@ type FarmWorldProps = {
   monadStarted: boolean;
   contractFieldStage: FieldVisualStage;
   contractStarted: boolean;
-  securityStage: string | null;
+  securityStage: GreenhouseStage | null;
   worldClock: WorldClock;
   portalDestinations: Record<PortalId, SceneDestination>;
   portalStatuses: Record<PortalId, string>;
@@ -236,7 +239,7 @@ export function FarmWorld({
   }
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
+    const frame = requestFrame(() => {
       const params = new URLSearchParams(window.location.search);
       const preset = previewMode ? previewPose(params.get("preview")) : null;
       const stored = preset
@@ -252,7 +255,7 @@ export function FarmWorld({
       setPose(initialPose);
       setHydrated(true);
     });
-    return () => window.cancelAnimationFrame(frame);
+    return () => cancelFrame(frame);
   }, [previewMode]);
 
   useEffect(() => {
@@ -279,7 +282,7 @@ export function FarmWorld({
 
   useEffect(() => {
     if (resetToken === 0) return;
-    const frame = window.requestAnimationFrame(() => {
+    const frame = requestFrame(() => {
       clearMovement();
       const resetPose: Pose = {
         position: { ...SPAWN_POINT },
@@ -290,7 +293,7 @@ export function FarmWorld({
       directionRef.current = resetPose.direction;
       setPose(resetPose);
     });
-    return () => window.cancelAnimationFrame(frame);
+    return () => cancelFrame(frame);
   }, [resetToken]);
 
   useEffect(() => {
@@ -365,7 +368,7 @@ export function FarmWorld({
           wasMovingRef.current = false;
           setPose((value) => ({ ...value, motion: "idle" }));
         }
-        frameRef.current = window.requestAnimationFrame(frame);
+        frameRef.current = requestFrame(frame);
         return;
       }
 
@@ -436,11 +439,11 @@ export function FarmWorld({
         onEnterRef.current(pending.destination, pending.chapter);
       }
 
-      frameRef.current = window.requestAnimationFrame(frame);
+      frameRef.current = requestFrame(frame);
     }
-    frameRef.current = window.requestAnimationFrame(frame);
+    frameRef.current = requestFrame(frame);
     return () => {
-      if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current);
+      if (frameRef.current !== null) cancelFrame(frameRef.current);
       lastFrameRef.current = 0;
     };
   // The animation loop is isolated from parent renders through refs.
@@ -483,54 +486,76 @@ export function FarmWorld({
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="world-map-art" src="/art/farm-map.png" alt="" />
+          <img className="world-map-art" src="/art/farm-map-sky-v2.png" alt="" />
+          <div className="world-sky" aria-hidden="true">
+            <span
+              className="world-celestial is-sun"
+              style={{
+                left: worldClock.sunX,
+                top: worldClock.sunY,
+                opacity: worldClock.sunOpacity,
+              }}
+            />
+            <span
+              className="world-celestial is-moon"
+              style={{
+                left: worldClock.moonX,
+                top: worldClock.moonY,
+                opacity: worldClock.moonOpacity,
+              }}
+            />
+          </div>
           <CourseFieldLayer
             stage={fieldStage}
             monadStage={monadFieldStage}
             monadStarted={monadStarted}
             contractStage={contractFieldStage}
             contractStarted={contractStarted}
+            securityStage={securityStage ?? "locked"}
             transitioning={fieldTransitioning}
           />
           {securityStage && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              className={`world-security-house stage-${securityStage}`}
-              src="/art/security-training-house.svg"
-              alt="Web3 安全训练场独立像素房屋"
+            <SecurityTrainingHouse3D
+              stage={securityStage}
               style={{
                 left: SECURITY_GREENHOUSE_BUILDING.x,
                 top: SECURITY_GREENHOUSE_BUILDING.y,
-              }}
+                "--building-daylight": (0.18 + worldClock.daylight * 0.82).toFixed(3),
+              } as CSSProperties}
             />
           )}
           <div
             className="world-smithy-house"
-            style={{ left: SMITHY_ENTRY.x, top: SMITHY_ENTRY.y }}
+            style={{ left: SMITHY_BUILDING.x, top: SMITHY_BUILDING.y }}
             role="img"
-            aria-label="铁匠铺像素房屋，回答 Web3 知识锻造装备"
+            aria-label="铁匠铺立体像素房屋，石砌炉膛、铁砧与锻造工作台"
           >
-            <span className="smithy-house-roof" />
-            <span className="smithy-house-body" />
-            <span className="smithy-house-door" />
-            <span className="smithy-house-window smithy-house-window-left" />
-            <span className="smithy-house-window smithy-house-window-right" />
-            <span className="smithy-house-chimney" />
-            <span className="smithy-house-anvil" />
-            <span className="smithy-house-sign">IRON<br />WEB3</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className="smithy-house-art"
+              src="/art/buildings/smithy-pixel-v2.png"
+              alt=""
+              draggable={false}
+              style={{ "--building-daylight": (0.12 + worldClock.daylight * 0.88).toFixed(3) } as CSSProperties}
+            />
+            <span className="smithy-forge-glow" aria-hidden="true" />
+            <span className="smithy-forge-fire" aria-hidden="true" />
           </div>
-          <div className={`world-time-overlay phase-${worldClock.phase}`} aria-hidden="true" />
-          <div className={`world-stars phase-${worldClock.phase}`} aria-hidden="true" />
+          <div
+            className={`world-time-overlay phase-${worldClock.phase}`}
+            style={{
+              "--world-darkness": (Math.pow(1 - worldClock.daylight, 1.1) * 0.72).toFixed(3),
+              "--world-twilight": worldClock.twilight.toFixed(3),
+              "--world-daylight": worldClock.daylight.toFixed(3),
+            } as CSSProperties}
+            aria-hidden="true"
+          />
+          <div
+            className={`world-stars phase-${worldClock.phase}`}
+            style={{ "--world-stars-opacity": Math.max(0, 0.72 - worldClock.daylight * 0.72).toFixed(3) } as CSSProperties}
+            aria-hidden="true"
+          />
           <div className="world-vignette" />
-          {securityStage && (
-            <span
-              className={`world-security-greenhouse stage-${securityStage}`}
-              style={{ left: SECURITY_GREENHOUSE_MARKER.x, top: SECURITY_GREENHOUSE_MARKER.y }}
-              aria-hidden="true"
-            >
-              <i className="world-security-icon">❖</i>
-            </span>
-          )}
           {destinationMarker && (
             <span
               className="world-destination-marker"
@@ -552,7 +577,7 @@ export function FarmWorld({
               }}
               aria-label={`${portal.label}：${portalStatuses[portal.id]}`}
             >
-              <span>{portal.id === "knowledge-tower" ? "▤" : portal.id === "seed-shop" ? "✦" : portal.id === "fishing-pond" ? "≈" : portal.id === "course-fields" ? "⌁" : portal.id === "smithy" ? "⚒" : portal.id === "security-greenhouse" ? "❖" : "◆"}</span>
+              <span>{portal.id === "knowledge-tower" ? "▤" : portal.id === "seed-shop" ? "✦" : portal.id === "fishing-pond" ? "≈" : portal.id === "course-fields" ? "⌁" : portal.id === "smithy" ? "⚒" : portal.id === "security-greenhouse" || portal.id === "security-course-plot" ? "❖" : "◆"}</span>
               <span className="portal-copy"><b>{portal.label}</b><small>{portalStatuses[portal.id]}</small></span>
             </button>
           ))}

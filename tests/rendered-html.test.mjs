@@ -43,7 +43,13 @@ test("server-renders the web3world learning shell", async () => {
   assert.match(html, /course-field-layer/);
   assert.match(html, /data-field-stage="wild"/);
   assert.match(html, /data-course-plot="web3"/);
-  assert.match(html, /data-course-plots="web3,monad,contract"/);
+  assert.match(html, /data-course-plots="web3,monad,contract,security"/);
+  assert.match(html, /data-security-course-stage="locked"/);
+  assert.match(html, /Web3 安全课程田/);
+  assert.match(html, /world-celestial is-sun/);
+  assert.match(html, /world-celestial is-moon/);
+  assert.match(html, /world-security-house-fallback/);
+  assert.match(html, /data-course-slot="4"/);
   assert.match(html, /data-contract-field-stage="wild"/);
   assert.match(html, /data-course-grid-slots="9"/);
   assert.match(html, /data-seed-count="0"/);

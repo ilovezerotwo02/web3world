@@ -1996,7 +1996,7 @@ input:focus-visible {
 
 .nft-dialog > img {
   width: 150px;
-  height: 150px;
+  height: 164px;
   object-fit: contain;
   image-rendering: pixelated;
 }
@@ -3619,6 +3619,20 @@ input:focus-visible {
 .course-grid-slot.is-unlocked polygon { fill: rgba(79, 61, 112, 0.04); stroke-width: 3px; }
 .course-grid-slot.is-locked polygon { fill: rgba(40, 32, 29, 0.05); stroke: rgba(103, 86, 70, 0.3); }
 .course-grid-slot.is-reserved polygon { fill: transparent; stroke: rgba(93, 77, 61, 0.22); stroke-dasharray: 5 10; }
+.course-grid-slot[data-course-slot="4"] polygon {
+  fill: rgba(25, 112, 106, 0.09);
+  stroke: rgba(110, 220, 195, 0.7);
+  stroke-width: 3px;
+  stroke-dasharray: 9 5;
+}
+.course-grid-slot[data-course-slot="4"] .course-grid-course {
+  fill: #c9fff0;
+  paint-order: stroke;
+  stroke: rgba(29, 27, 24, 0.92);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+}
+.course-grid-slot[data-course-slot="4"].is-locked .course-grid-course { fill: #bbd1cb; }
 .course-grid-number { font-size: 31px; }
 .course-grid-course { font-size: 21px; }
 .course-grid-slot.is-locked text { opacity: 0.62; }
@@ -6532,24 +6546,13 @@ input:focus-visible {
 .world-time-overlay {
   z-index: 4;
   background: transparent;
-  transition: background 900ms linear, opacity 900ms linear;
-}
-
-.world-time-overlay.phase-dawn {
-  background: rgba(231, 145, 93, 0.11);
-}
-
-.world-time-overlay.phase-dusk {
-  background: rgba(107, 64, 119, 0.2);
-}
-
-.world-time-overlay.phase-night {
-  background: rgba(9, 12, 40, 0.54);
-  mix-blend-mode: multiply;
+  transition: background 180ms linear;
 }
 
 .world-stars {
   z-index: 5;
+  bottom: auto;
+  height: 150px;
   opacity: 0;
   background:
     radial-gradient(circle at 13% 18%, rgba(255, 245, 192, 0.86) 0 1px, transparent 2px),
@@ -6563,6 +6566,44 @@ input:focus-visible {
 .world-stars.phase-night,
 .world-stars.phase-dusk {
   opacity: 0.72;
+}
+
+.world-sky {
+  position: absolute;
+  z-index: 6;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 164px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.world-celestial {
+  position: absolute;
+  z-index: 6;
+  display: block;
+  width: 42px;
+  height: 42px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  image-rendering: pixelated;
+  transition: opacity 1.2s linear;
+}
+
+.world-celestial::before {
+  position: absolute;
+  inset: 0;
+  background: url("/art/sky/sun-pixel-v2.png") center / contain no-repeat;
+  content: "";
+}
+
+.world-celestial.is-sun {
+  filter: drop-shadow(0 0 8px rgba(255, 203, 112, 0.5));
+}
+
+.world-celestial.is-moon::before {
+  background-image: url("/art/sky/moon-pixel-v2.png");
 }
 
 .world-clock {
@@ -6741,149 +6782,84 @@ input:focus-visible {
   background: #bd8a40;
 }
 
+.world-portal.portal-security-course-plot {
+  border-color: rgba(115, 225, 196, 0.9);
+  background: rgba(19, 48, 47, 0.94);
+  transform: translate(-50%, -50%) scale(0.82);
+}
+
+.world-portal.portal-security-course-plot.is-near { transform: translate(-50%, -50%) scale(0.86); }
+
+.world-portal.portal-security-course-plot > span:first-child {
+  color: #d9fff3;
+  background: #287d70;
+  box-shadow: inset -2px -2px 0 #164a44, 0 0 12px rgba(103, 230, 196, 0.25);
+}
+
+.world-portal.portal-security-course-plot::after {
+  border-color: #d9fff3;
+  background: #4eb89d;
+}
+
 /* --- Standalone Web3 smithy --- */
 
 .world-smithy-house {
   position: absolute;
   z-index: 640;
-  width: 184px;
-  height: 144px;
+  width: 224px;
+  height: 196px;
   transform: translate(-50%, -100%);
   pointer-events: none;
-  image-rendering: pixelated;
-  filter: drop-shadow(7px 9px 0 rgba(18, 10, 25, 0.5));
 }
 
-.smithy-house-body,
-.smithy-house-roof,
-.smithy-house-door,
-.smithy-house-window,
-.smithy-house-chimney,
-.smithy-house-anvil,
-.smithy-house-sign {
+.smithy-house-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  filter: brightness(var(--building-daylight, 1)) drop-shadow(3px 4px 0 rgba(18, 10, 25, 0.32));
+  transition: filter 600ms linear;
+}
+
+.smithy-forge-glow,
+.smithy-forge-fire {
   position: absolute;
   display: block;
 }
 
-.smithy-house-body {
-  right: 14px;
-  bottom: 0;
-  left: 14px;
-  height: 78px;
-  border: 4px solid #241825;
-  background:
-    repeating-linear-gradient(90deg, #4a3440 0 16px, #594044 16px 20px),
-    #4a3440;
-  box-shadow: inset 0 -9px 0 #2d202d, inset 0 8px 0 rgba(255, 201, 126, 0.12), 0 6px 0 #16101c;
-}
-
-.smithy-house-roof {
-  top: 18px;
-  left: 8px;
-  width: 168px;
-  height: 58px;
-  border: 5px solid #241825;
-  background:
-    repeating-linear-gradient(135deg, #b35f3f 0 10px, #874531 10px 18px),
-    #8e4c36;
-  box-shadow: inset 0 7px 0 rgba(255, 222, 151, 0.2), inset 0 -8px 0 rgba(17, 10, 26, 0.42), 0 7px 0 #342230;
-  transform: skewX(-18deg);
-}
-
-.smithy-house-door {
-  bottom: 0;
-  left: 76px;
-  width: 34px;
-  height: 58px;
-  border: 4px solid #241825;
-  background: #251a2c;
-  box-shadow: inset 8px 0 0 rgba(192, 112, 67, 0.34);
-}
-
-.smithy-house-door::after {
-  position: absolute;
-  top: 28px;
-  right: 5px;
-  width: 6px;
-  height: 6px;
-  background: #f2c35b;
-  box-shadow: 0 0 7px rgba(242, 195, 91, 0.8);
-  content: "";
-}
-
-.smithy-house-window {
-  top: 83px;
-  width: 28px;
-  height: 24px;
-  border: 4px solid #241825;
-  background:
-    linear-gradient(90deg, transparent 45%, #241825 45% 55%, transparent 55%),
-    linear-gradient(0deg, transparent 45%, #241825 45% 55%, transparent 55%),
-    #efaa56;
-  box-shadow: inset 0 0 0 4px rgba(255, 248, 204, 0.24), 0 0 10px rgba(239, 170, 86, 0.3);
-}
-
-.smithy-house-window-left {
-  left: 29px;
-}
-
-.smithy-house-window-right {
-  right: 29px;
-}
-
-.smithy-house-chimney {
-  top: 0;
-  right: 28px;
-  width: 25px;
+.smithy-forge-glow {
+  z-index: 1;
+  left: 46px;
+  top: 116px;
+  width: 50px;
   height: 40px;
-  border: 4px solid #241825;
-  background: repeating-linear-gradient(0deg, #6f3d3b 0 9px, #8e4e42 9px 14px);
-  box-shadow: 0 -6px 0 -1px #241825;
+  background: radial-gradient(ellipse, rgba(255, 125, 45, 0.38), rgba(255, 97, 34, 0.14) 42%, transparent 74%);
+  opacity: 0.72;
+  animation: smithy-forge-pulse 1.8s ease-in-out infinite;
 }
 
-.smithy-house-chimney::after {
-  position: absolute;
-  top: -22px;
-  left: 4px;
-  width: 11px;
-  height: 18px;
-  background: rgba(224, 213, 196, 0.3);
-  box-shadow: 10px -7px 0 rgba(224, 213, 196, 0.2);
-  content: "";
-  animation: smithy-smoke 2.4s steps(3, end) infinite;
-}
-
-.smithy-house-anvil {
-  bottom: 10px;
-  left: 9px;
-  width: 32px;
-  height: 16px;
-  border: 4px solid #241825;
-  background: #77909b;
-  box-shadow: inset 0 -5px 0 #435661, 9px 9px 0 -5px #241825;
-}
-
-.smithy-house-sign {
-  top: 52px;
-  right: 26px;
+.smithy-forge-fire {
   z-index: 2;
-  min-width: 50px;
-  padding: 4px 5px 3px;
-  border: 2px solid #f2c35b;
-  color: #fff0b8;
-  background: #302039;
-  font-family: "Courier New", monospace;
-  font-size: 9px;
-  font-weight: 900;
-  line-height: 1.05;
-  text-align: center;
-  letter-spacing: 0.04em;
-  box-shadow: 3px 3px 0 #17101f;
+  left: 60px;
+  top: 115px;
+  width: 24px;
+  height: 28px;
+  background: url("/art/buildings/forge-flames-pixel-v2.png") left center / 300% 100% no-repeat;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 5px rgba(255, 137, 55, 0.7));
+  animation: smithy-forge-flicker 480ms steps(1, end) infinite;
 }
 
-@keyframes smithy-smoke {
-  0%, 100% { opacity: 0.1; transform: translate(0, 5px); }
-  50% { opacity: 0.6; transform: translate(5px, -2px); }
+@keyframes smithy-forge-flicker {
+  0% { background-position: 0 center; transform: skewY(25deg) translateY(1px); }
+  33% { background-position: 50% center; transform: skewY(25deg) translateY(-1px); }
+  66%, 100% { background-position: 100% center; transform: skewY(25deg) translateY(0); }
+}
+
+@keyframes smithy-forge-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(0.94); }
+  50% { opacity: 0.8; transform: scale(1.06); }
 }
 
 .smithy-panel {
@@ -7327,8 +7303,9 @@ input:focus-visible {
 }
 
 .forge-item-art.is-compact {
-  width: 38px;
-  height: 38px;
+  width: 62px;
+  height: 58px;
+  zoom: 0.61;
 }
 
 .forge-item-art i,
@@ -7451,4 +7428,136 @@ input:focus-visible {
   .smithy-equipped-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Final readability pass: keep the security callout in its own grid row. */
+.content-drawer.pixel-frame {
+  grid-template-rows: 52px auto minmax(0, 1fr);
+}
+
+.content-drawer.pixel-frame.has-security-entry {
+  grid-template-rows: 52px auto auto minmax(0, 1fr);
+}
+
+.drawer-task-summary {
+  min-height: 58px;
+}
+
+.security-entry {
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: start;
+  min-width: 0;
+  margin: 0 18px 14px;
+}
+
+.security-entry > div:nth-child(2) {
+  min-width: 0;
+}
+
+.security-entry span,
+.security-entry b,
+.security-entry small {
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.security-entry b {
+  margin-top: 4px;
+  line-height: 1.3;
+}
+
+.security-entry small {
+  line-height: 1.45;
+}
+
+.security-entry > button {
+  grid-column: 2;
+  justify-self: start;
+  min-height: 34px;
+  margin-top: 3px;
+  white-space: normal;
+  line-height: 1.35;
+}
+
+.web3-security-module-head {
+  flex-wrap: wrap;
+}
+
+.web3-security-module-head > div {
+  min-width: 0;
+  flex: 1 1 220px;
+}
+
+.web3-security-module h2 {
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+}
+
+.web3-security-module-foot {
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.web3-security-module-foot small {
+  min-width: 0;
+  flex: 1 1 210px;
+}
+
+.web3-security-module-foot .pixel-button {
+  white-space: normal;
+  line-height: 1.35;
+}
+
+.world-security-house-3d {
+  position: absolute;
+  z-index: 650;
+  width: 280px;
+  height: 220px;
+  transform: translate(-50%, -70%);
+  pointer-events: none;
+  image-rendering: pixelated;
+  filter: brightness(var(--building-daylight, 1)) drop-shadow(7px 10px 0 rgba(18, 10, 25, 0.46));
+  transition: filter 600ms linear;
+}
+
+.world-security-house-3d canvas {
+  display: block;
+  width: 280px;
+  height: 220px;
+}
+
+.world-security-house-fallback {
+  display: none;
+}
+
+.world-security-house-3d[data-webgl-fallback="true"] canvas {
+  display: none;
+}
+
+.world-security-house-3d[data-webgl-fallback="true"] .world-security-house-fallback {
+  display: block;
+  width: 280px;
+  height: 210px;
+  image-rendering: pixelated;
+}
+
+.portal-security-greenhouse > .portal-copy {
+  right: 46px;
+  left: auto;
+}
+
+.world-time-overlay,
+.world-time-overlay.phase-dawn,
+.world-time-overlay.phase-dusk,
+.world-time-overlay.phase-night {
+  background:
+    linear-gradient(180deg, rgba(247, 132, 82, calc(var(--world-twilight, 0) * 0.18)), transparent 62%),
+    rgba(9, 12, 40, var(--world-darkness, 0));
+  mix-blend-mode: multiply;
+}
+
+.world-stars,
+.world-stars.phase-night,
+.world-stars.phase-dusk {
+  opacity: var(--world-stars-opacity, 0);
 }

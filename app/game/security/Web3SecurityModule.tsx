@@ -3,7 +3,7 @@
 import { GREENHOUSE_STAGE_COPY } from "../security/security-progress";
 import type { GreenhouseStage } from "../security/types";
 
-export type SecurityModuleContext = "land" | "pond" | "seeds";
+export type SecurityModuleContext = "courses" | "land" | "pond" | "seeds";
 
 const MODULE_COPY: Record<
   SecurityModuleContext,
@@ -15,6 +15,17 @@ const MODULE_COPY: Record<
     action: string;
   }
 > = {
+  courses: {
+    eyebrow: "WEB3 SECURITY · 知识塔",
+    title: "每条课程路线先确认安全边界",
+    body: "课程路线同时训练 Web3 基础判断：识别网络、权限、签名和回执，不把一张前端卡片当成链上事实。",
+    checks: [
+      "课程入口与当前解锁状态必须一致",
+      "学习流程不索取私钥、助记词或无限授权",
+      "进入下一关前先完成安全复盘与验证",
+    ],
+    action: "进入 Web3 安全训练场",
+  },
   land: {
     eyebrow: "WEB3 SECURITY · 课程土地",
     title: "先过安全田埂，再让知识作物生长",

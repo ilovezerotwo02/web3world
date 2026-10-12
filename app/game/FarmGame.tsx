@@ -80,6 +80,7 @@ import type {
   SecurityProgress as SecurityProgressState,
 } from "./security/types";
 import { useWorldClock, type WorldPhase } from "./world-clock";
+import { cancelFrame, requestFrame } from "./animation-frame";
 import {
   FISHING_STORAGE_KEY,
   FISH_SPECIES,
@@ -452,7 +453,7 @@ export function FarmGame() {
   const dismissToast = useCallback(() => setToast(null), []);
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
+    const frame = requestFrame(() => {
       const params = new URLSearchParams(window.location.search);
       const previewName = params.get("preview");
       const requestedTime = params.get("time");
@@ -620,7 +621,7 @@ export function FarmGame() {
       else if (stored.harvested) setActiveCourse("monad");
       setHydrated(true);
     });
-    return () => window.cancelAnimationFrame(frame);
+    return () => cancelFrame(frame);
   }, []);
 
   useEffect(() => {
@@ -734,6 +735,7 @@ export function FarmGame() {
     "seed-shop": "seeds",
     "fishing-pond": "fishing",
     "course-fields": "land",
+    "security-course-plot": "security",
     "progress-workshop": workshopDestination,
     smithy: "smithy",
     "security-greenhouse": "security",
@@ -747,6 +749,7 @@ export function FarmGame() {
       : activeCourse === "monad"
         ? `第 2 格 · Monad 基础 · ${FIELD_STAGE_LABELS[monadFieldStage]}`
         : `第 3 格 · 智能合约 · ${FIELD_STAGE_LABELS[contractFieldStage]}`,
+    "security-course-plot": `第 4 格 · Web3 安全 · ${GREENHOUSE_STAGE_COPY[securityStage].label}`,
     "progress-workshop": activeProgress.challengePassed.every(Boolean)
       ? activeProgress.verification === "passed" ? "验证已完成" : "开始最终验证"
       : "章节挑战",
@@ -838,7 +841,7 @@ export function FarmGame() {
 
   function closeDrawer() {
     setView("home");
-    window.requestAnimationFrame(() => {
+    requestFrame(() => {
       if (lastPortalId) {
         document.querySelector<HTMLButtonElement>(`.portal-${lastPortalId}`)?.focus();
       }
@@ -1092,7 +1095,14 @@ export function FarmGame() {
       />
 
       {drawerOpen && (
-        <aside className="content-drawer pixel-frame" aria-live="polite" aria-label="地点内容">
+        <aside
+          className={joinClasses(
+            "content-drawer pixel-frame",
+            view !== "security" && view !== "security-report" && "has-security-entry",
+          )}
+          aria-live="polite"
+          aria-label="地点内容"
+        >
           <div className="drawer-toolbar">
             <span className="drawer-location-icon" aria-hidden="true">{drawerContext.icon}</span>
             <div><span>{drawerContext.location}</span><b>{drawerContext.detail}</b></div>
@@ -1135,6 +1145,8 @@ export function FarmGame() {
                   if (!selectedProgress.started) startCourse(course);
                 }}
                 onChapter={(chapter) => navigate("chapter", chapter)}
+                securityStage={securityStage}
+                onOpenSecurity={() => setView("security")}
               />
             )}
             {view === "seeds" && (
@@ -1389,6 +1401,8 @@ function CoursesPanel({
   activeCourse,
   onOpenCourse,
   onChapter,
+  securityStage,
+  onOpenSecurity,
 }: {
   progress: FarmProgress;
   monadProgress: FarmProgress;
@@ -1396,6 +1410,8 @@ function CoursesPanel({
   activeCourse: ActiveCourse;
   onOpenCourse: (course: ActiveCourse) => void;
   onChapter: (chapter: number) => void;
+  securityStage: GreenhouseStage;
+  onOpenSecurity: () => void;
 }) {
   const selectedProgress = activeCourse === "web3" ? progress : activeCourse === "monad" ? monadProgress : contractProgress;
   const selectedChapters = activeCourse === "web3" ? web3Chapters : activeCourse === "monad" ? monadChapters : contractChapters;
@@ -1405,6 +1421,11 @@ function CoursesPanel({
       <SectionTitle eyebrow="知识塔 · 课程路线" title="从通识走向合约">
         <Pill tone="violet">{availableCount} / 3 已解锁</Pill>
       </SectionTitle>
+      <Web3SecurityModule
+        context="courses"
+        securityStage={securityStage}
+        onOpenSecurity={onOpenSecurity}
+      />
       <div className="course-route">
         {courseRoute.map((course, index) => {
           const unlocked = index === 0 || index === 1 && progress.harvested || index === 2 && monadProgress.harvested;

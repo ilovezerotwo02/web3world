@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { cancelFrame, requestFrame } from "./animation-frame";
 
 export const FARM_MUSIC_STORAGE_KEY = "monad-pixel-farm:v35:music-enabled";
 
@@ -64,7 +65,7 @@ export function useFarmMusic(): FarmMusicState {
   }, [start, stop]);
 
   useEffect(() => {
-    const restoreFrame = window.requestAnimationFrame(() => {
+    const restoreFrame = requestFrame(() => {
       setRemembered(window.localStorage.getItem(FARM_MUSIC_STORAGE_KEY) === "1");
     });
     const handleVisibility = () => {
@@ -75,7 +76,7 @@ export function useFarmMusic(): FarmMusicState {
     };
     document.addEventListener("visibilitychange", handleVisibility);
     return () => {
-      window.cancelAnimationFrame(restoreFrame);
+      cancelFrame(restoreFrame);
       document.removeEventListener("visibilitychange", handleVisibility);
       enabledRef.current = false;
       const audio = audioRef.current;

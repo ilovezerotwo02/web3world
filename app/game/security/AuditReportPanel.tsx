@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { cancelFrame, requestFrame } from "../animation-frame";
 import { FINAL_AUDIT_SCENARIO } from "../../../lib/security/scenarios";
 import { evaluateFinalAudit, type FindingDraft } from "../../../lib/security/scoring";
 import { buildAuditReport, reportIdFromHash, reportToMarkdown, withReportHash, type AuditReport } from "../../../lib/security/report";
@@ -56,11 +57,11 @@ export function AuditReportPanel({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
+    const frame = requestFrame(() => {
       setFindings(readStoredFindings());
       setHydrated(true);
     });
-    return () => window.cancelAnimationFrame(frame);
+    return () => cancelFrame(frame);
   }, []);
 
   useEffect(() => {

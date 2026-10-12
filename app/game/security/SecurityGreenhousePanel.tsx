@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { cancelFrame, requestFrame } from "../animation-frame";
 import { LABS, getScenario, scenariosForLab } from "../../../lib/security/scenarios";
 import type { StepName } from "../../../lib/security/session-steps";
 import { AuditReportPanel } from "./AuditReportPanel";
@@ -66,10 +67,10 @@ export function SecurityGreenhousePanel({
   const [lab2Scenario, setLab2Scenario] = useState("access-control-mint-v1");
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
+    const frame = requestFrame(() => {
       dispatch({ type: "unlock" });
     });
-    return () => window.cancelAnimationFrame(frame);
+    return () => cancelFrame(frame);
   }, [dispatch]);
 
   const stage = securityLabStage(progress);

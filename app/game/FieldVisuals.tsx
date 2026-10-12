@@ -7,6 +7,7 @@ import {
   type LedgerStarCropStage,
 } from "./field-assets";
 import { courseGridSlots } from "./course-plots";
+import type { GreenhouseStage } from "./security/types";
 
 export type SeedKind = "ledger-star" | "parallel-wisteria" | "contract-scroll";
 
@@ -70,6 +71,7 @@ type FieldSceneProps = {
   monadStarted?: boolean;
   contractStage?: FieldVisualStage;
   contractStarted?: boolean;
+  securityStage?: GreenhouseStage;
   transitioning?: boolean;
   preview?: boolean;
 };
@@ -136,19 +138,27 @@ function CourseGrid({
   monadStarted,
   contractStage,
   contractStarted,
+  securityStage,
 }: {
   stage: FieldVisualStage;
   monadStage: FieldVisualStage;
   monadStarted: boolean;
   contractStage: FieldVisualStage;
   contractStarted: boolean;
+  securityStage: GreenhouseStage;
 }) {
+  const securityStatus = securityStage === "locked"
+    ? "locked"
+    : securityStage === "secured" || securityStage === "fully-powered"
+      ? "harvested"
+      : "active";
   const slots = courseGridSlots(
     stage === "harvested",
     monadStarted,
     monadStage === "harvested",
     contractStarted,
     contractStage === "harvested",
+    securityStatus,
   );
   return (
     <svg className="course-grid-board" viewBox="0 0 1600 900" aria-hidden="true" shapeRendering="crispEdges">
@@ -180,6 +190,7 @@ function FieldScene({
   monadStarted = false,
   contractStage = "wild",
   contractStarted = false,
+  securityStage = "locked",
   transitioning = false,
   preview = false,
 }: FieldSceneProps) {
@@ -195,8 +206,9 @@ function FieldScene({
       data-field-stage={stage}
       data-monad-field-stage={monadStage}
       data-contract-field-stage={contractStage}
+      data-security-course-stage={securityStage}
       data-course-plot="web3"
-      data-course-plots="web3,monad,contract"
+      data-course-plots="web3,monad,contract,security"
       data-course-grid-slots="9"
       data-seed-count={seedCount}
     >
@@ -292,6 +304,7 @@ function FieldScene({
         monadStarted={monadStarted}
         contractStage={contractStage}
         contractStarted={contractStarted}
+        securityStage={securityStage}
       />
       {transitioning && (
         <span className={`field-transition-fx field-transition-${stage}`}>
@@ -308,6 +321,7 @@ export function CourseFieldLayer({
   monadStarted,
   contractStage,
   contractStarted,
+  securityStage,
   transitioning,
 }: {
   stage: FieldVisualStage;
@@ -315,6 +329,7 @@ export function CourseFieldLayer({
   monadStarted: boolean;
   contractStage: FieldVisualStage;
   contractStarted: boolean;
+  securityStage: GreenhouseStage;
   transitioning: boolean;
 }) {
   return (
@@ -325,6 +340,7 @@ export function CourseFieldLayer({
         monadStarted={monadStarted}
         contractStage={contractStage}
         contractStarted={contractStarted}
+        securityStage={securityStage}
         transitioning={transitioning}
       />
     </div>

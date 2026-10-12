@@ -34,6 +34,7 @@ export type PortalId =
   | "course-fields"
   | "progress-workshop"
   | "smithy"
+  | "security-course-plot"
   | "security-greenhouse";
 
 export type ScenePortal = {
@@ -85,11 +86,13 @@ export const PLAYER_COLLIDER = { radiusX: 10, radiusY: 6 } as const;
 export const SCENE_STORAGE_KEY = "monad-pixel-farm:v35:scene-state";
 
 export const SPAWN_POINT: WorldPoint = { x: 792, y: 585 };
-export const SMITHY_ENTRY: WorldPoint = { x: 850, y: 820 };
-export const SMITHY_MARKER: WorldPoint = { x: 850, y: 744 };
+export const SMITHY_ENTRY: WorldPoint = { x: 850, y: 850 };
+export const SMITHY_BUILDING: WorldPoint = { x: 850, y: 820 };
+export const SMITHY_MARKER: WorldPoint = { x: 898, y: 804 };
 export const SECURITY_GREENHOUSE_ENTRY: WorldPoint = { x: 1300, y: 850 };
-export const SECURITY_GREENHOUSE_BUILDING: WorldPoint = { x: 1300, y: 820 };
-export const SECURITY_GREENHOUSE_MARKER: WorldPoint = { x: 1300, y: 760 };
+export const SECURITY_GREENHOUSE_BUILDING: WorldPoint = { x: 1300, y: 840 };
+export const SECURITY_GREENHOUSE_MARKER: WorldPoint = { x: 1300, y: 836 };
+export const SECURITY_COURSE_PLOT_MARKER: WorldPoint = { x: 288, y: 510 };
 
 export const SCENE_PORTALS: ScenePortal[] = [
   {
@@ -124,6 +127,15 @@ export const SCENE_PORTALS: ScenePortal[] = [
     position: { x: 690, y: 610 },
     interactionRadius: 54,
     destination: "land",
+  },
+  {
+    id: "security-course-plot",
+    label: "Web3 安全课程田",
+    description: "第 4 格 · 智能合约漏洞、钱包签名与交易安全训练",
+    position: { x: 690, y: 444 },
+    markerPosition: SECURITY_COURSE_PLOT_MARKER,
+    interactionRadius: 54,
+    destination: "security",
   },
   {
     id: "progress-workshop",
@@ -183,7 +195,9 @@ const BLOCKERS: Blocker[] = [
   { kind: "rect", x: 1080, y: 95, width: 390, height: 270 },
   { kind: "rect", x: 118, y: 445, width: 545, height: 295 },
   { kind: "rect", x: 1000, y: 510, width: 405, height: 285 },
-  { kind: "rect", x: 1170, y: 795, width: 260, height: 30 },
+  { kind: "rect", x: 750, y: 672, width: 200, height: 156 },
+  // The greenhouse footprint includes the scaled house and its southern apron.
+  { kind: "rect", x: 1142, y: 795, width: 318, height: 48 },
   { kind: "ellipse", x: 817, y: 284, radiusX: 178, radiusY: 132 },
   { kind: "ellipse", x: 560, y: 170, radiusX: 102, radiusY: 92 },
   { kind: "ellipse", x: 690, y: 196, radiusX: 62, radiusY: 74 },

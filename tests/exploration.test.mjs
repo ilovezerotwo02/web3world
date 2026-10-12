@@ -3,9 +3,12 @@ import test from "node:test";
 
 import {
   SCENE_PORTALS,
+  SECURITY_COURSE_PLOT_MARKER,
   SECURITY_GREENHOUSE_BUILDING,
   SECURITY_GREENHOUSE_ENTRY,
   SECURITY_GREENHOUSE_MARKER,
+  SMITHY_BUILDING,
+  SMITHY_ENTRY,
   SPAWN_POINT,
   canStand,
   directionFromVector,
@@ -49,17 +52,57 @@ test("Web3 安全训练场在地图上有独立入口，并且入口可达", () 
   assert.deepEqual(security?.position, SECURITY_GREENHOUSE_ENTRY);
   assert.deepEqual(security?.markerPosition, SECURITY_GREENHOUSE_MARKER);
   assert.notDeepEqual(SECURITY_GREENHOUSE_BUILDING, SECURITY_GREENHOUSE_ENTRY);
+  assert.ok(distanceBetween(SECURITY_GREENHOUSE_MARKER, SECURITY_GREENHOUSE_BUILDING) <= 24);
   assert.equal(canStand(security.position), true);
+  assert.equal(canStand(SECURITY_GREENHOUSE_BUILDING), false);
   assert.ok(findPath(SPAWN_POINT, security.position).length >= 2);
+  assert.ok(canStand(SECURITY_GREENHOUSE_ENTRY));
+});
+
+test("the fourth Web3 security field marker opens the existing training scene", () => {
+  const plot = SCENE_PORTALS.find((portal) => portal.id === "security-course-plot");
+  assert.equal(plot?.label, "Web3 安全课程田");
+  assert.equal(plot?.destination, "security");
+  assert.deepEqual(plot?.markerPosition, SECURITY_COURSE_PLOT_MARKER);
+  assert.deepEqual(SECURITY_COURSE_PLOT_MARKER, { x: 288, y: 510 });
+  assert.equal(canStand(plot.position), true);
+  assert.ok(findPath(SPAWN_POINT, plot.position).length >= 2);
+});
+
+test("the smithy has a separate walk-up point and blocks traversal through its footprint", () => {
+  const smithy = SCENE_PORTALS.find((portal) => portal.id === "smithy");
+  assert.deepEqual(smithy?.position, SMITHY_ENTRY);
+  assert.equal(canStand(SMITHY_BUILDING), false);
+  assert.equal(canStand(SMITHY_ENTRY), true);
+  assert.ok(findPath(SPAWN_POINT, SMITHY_ENTRY).length >= 2);
 });
 
 test("Web3 安全训练场使用独立房屋模型，不复用进步工坊入口", async () => {
   const source = await import("node:fs/promises").then((fs) =>
     fs.readFile(new URL("../app/game/FarmWorld.tsx", import.meta.url), "utf8"),
   );
-  assert.match(source, /world-security-house/);
-  assert.match(source, /security-training-house\.svg/);
+  const houseSource = await import("node:fs/promises").then((fs) =>
+    fs.readFile(new URL("../app/game/SecurityTrainingHouse3D.tsx", import.meta.url), "utf8"),
+  );
+  assert.match(source, /SecurityTrainingHouse3D/);
   assert.match(source, /SECURITY_GREENHOUSE_BUILDING/);
+  assert.doesNotMatch(source, /className=\{`world-security-greenhouse/);
+  assert.match(source, /smithy-pixel-v2\.png/);
+  assert.match(source, /farm-map-sky-v2\.png/);
+  assert.match(source, /smithy-forge-fire/);
+  assert.match(source, /worldClock\.daylight/);
+  assert.match(source, /worldClock\.sunOpacity/);
+  assert.match(source, /worldClock\.moonOpacity/);
+  const css = await import("node:fs/promises").then((fs) =>
+    fs.readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+  );
+  assert.match(css, /\.smithy-house-art\s*\{[^}]*brightness\(var\(--building-daylight/);
+  assert.match(css, /\.world-security-house-3d\s*\{[^}]*brightness\(var\(--building-daylight/);
+  assert.match(css, /\.smithy-forge-fire\s*\{[^}]*z-index:\s*2/s);
+  assert.match(css, /forge-flames-pixel-v2\.png/);
+  assert.match(houseSource, /ExtrudeGeometry/);
+  assert.match(houseSource, /security-training-house\.svg/);
+  assert.doesNotMatch(houseSource, /CanvasTexture/);
   assert.notEqual(
     SECURITY_GREENHOUSE_ENTRY.x,
     SCENE_PORTALS.find((portal) => portal.id === "progress-workshop")?.position.x,
@@ -96,6 +139,18 @@ test("camera follows the player and remains clamped to the world", () => {
   assert.equal(topLeft.y, 0);
   assert.ok(bottomRight.x < 0);
   assert.ok(bottomRight.y < 0);
+});
+
+test("the sky belongs to the map and does not cancel the player's camera movement", async () => {
+  const source = await import("node:fs/promises").then((fs) =>
+    fs.readFile(new URL("../app/game/FarmWorld.tsx", import.meta.url), "utf8"),
+  );
+  assert.match(source, /className="world-sky"/);
+  for (const body of ["sun", "moon"]) {
+    assert.match(source, new RegExp(`left: worldClock\\.${body}X`));
+    assert.match(source, new RegExp(`top: worldClock\\.${body}Y`));
+    assert.doesNotMatch(source, new RegExp(`viewport\\.(width|height) \\* worldClock\\.${body}`));
+  }
 });
 
 test("stored scene state accepts only valid versioned walkable coordinates", () => {

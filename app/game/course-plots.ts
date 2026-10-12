@@ -12,6 +12,14 @@ export const COURSE_PLOTS = courseRoute.map(({ id, order, title, seed, crop }) =
   crop,
 }));
 
+export const SECURITY_COURSE_PLOT = {
+  id: "security",
+  order: 4,
+  title: "Web3 安全",
+  seed: "安全种子",
+  crop: "防护结晶",
+} as const;
+
 export const COURSE_GRID_SLOTS: CourseGridSlot[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export function coursePlotStatuses(
@@ -34,14 +42,19 @@ export function courseGridSlots(
   monadHarvested = false,
   contractStarted = false,
   contractHarvested = false,
+  securityStatus: CoursePlotStatus = "locked",
 ) {
   const statuses = coursePlotStatuses(web3Harvested, monadStarted, monadHarvested, contractStarted, contractHarvested);
   return COURSE_GRID_SLOTS.map((slot) => {
-    const course = COURSE_PLOTS[slot - 1] ?? null;
+    const course = slot === SECURITY_COURSE_PLOT.order
+      ? SECURITY_COURSE_PLOT
+      : COURSE_PLOTS[slot - 1] ?? null;
     return {
       slot,
       course,
-      status: course ? statuses[course.id] : "reserved" as const,
+      status: slot === SECURITY_COURSE_PLOT.order
+        ? securityStatus
+        : course ? statuses[course.id as CoursePlotId] : "reserved" as const,
     };
   });
 }

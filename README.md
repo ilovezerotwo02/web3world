@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="./docs/assets/monad-pixel-farm-hero.png" alt="web3world：把链上判断练成手感" width="100%" />
+  <img src="./docs/assets/web3world-map.png" alt="web3world：课程田、铁匠铺与 Web3 安全训练场" width="100%" />
 </p>
 
 <h1 align="center">web3world</h1>
 
 <p align="center">
-  <strong>Explore · Check · Practice · Prove</strong><br />
-  在地图里学习 Web3，在训练场里检查风险，把判断练成手感。
+  <strong>基于原 Monad 像素农场的后续完善与补充</strong><br />
+  保留原有课程与农场玩法，继续补齐 Web3 安全训练、知识锻造和世界交互。
 </p>
 
 <p align="center">
@@ -14,24 +14,32 @@
 </p>
 
 <p align="center">
-  <a href="https://monad-pixel-farm.sushengi.workers.dev">在线体验</a>
+  <a href="https://monad-pixel-farm.sushengi.workers.dev">原项目在线版本</a>
   ·
   <a href="https://testnet.monadscan.com/address/0xc96a7087cfbbe5eb6f6f81a0905ad7a4d1375a5f">徽章合约</a>
   ·
   <a href="./docs/Monad像素农场_PRD_v3.5.md">产品文档</a>
 </p>
 
+## 项目来源与本次补充
+
+**web3world 是原 `web3-learn-farm`（Monad 像素农场）项目的后续完善版本，不是从零重新开发的项目。** 原有农场地图、角色、三门基础课程、种植流程、回执池塘、钱包及徽章流程继续保留。在这些功能基础上，本仓库补充安全训练、知识锻造、第四块课程田和连续日夜变化，并修复运行与布局问题。原有素材和文档保留在仓库中。
+
+| 原项目基础 | 后续完善与补充 |
+| --- | --- |
+| Web3 通识、Monad 基础、智能合约课程 | 第四块 Web3 安全课程田，各地点补充对应安全知识 |
+| 课程土地、知识塔、池塘、种子小铺、进步工坊 | 独立 Web3 安全训练场入口、漏洞实验、交易检查与审计报告 |
+| 像素农场探索 | 同一张地图上的连续昼夜、太阳升落与月亮接替，一天对应 24 秒 |
+| 地图建筑和交互 | 铁匠铺像素模型、炉膛火焰、建筑碰撞与入口位置调整 |
+| 学习与成长记录 | 三道 Web3 知识题、三件像素装备、答对解锁与装备穿脱 |
+
+太阳和月亮属于地图顶部的天空，不固定在浏览器视口，也不会跟着玩家出现在头顶。光线连续变化，铁匠铺和安全训练场随天色变暗，炉膛火焰单独发光。
+
+> 上方在线地址是原项目的部署入口，不代表已部署本仓库的全部新增内容。体验当前代码请按下方步骤在本地运行；GitHub 上传与在线部署是两件事。
+
 ## web3world 是什么
 
-web3world 不是一页堆概念的教程，而是一张可以走进去的学习地图：课程土地负责建立基础，回执池塘负责核对链上结果，Web3 安全训练场负责拆解漏洞与交易风险。每一步都用可观察的状态变化记录下来，适合本地演示、测试网练习和黑客松展示。
-
-## Why it matters
-
-- **Web3 education stops at concepts.** → 安全温室里的 **Exploit Labs**：亲手让漏洞发生，再亲手修好它。
-- **Wallets still ask users to sign opaque actions.** → **SignGuard**：签名前用人话解释 method / value / permission，并给出 ALLOW / REVIEW / BLOCK。
-- **Security credentials rarely prove hands-on skill.** → **Security Passport（SBT, typeId 3）**：绑定漏洞复现、修复回归与审计报告哈希的可验证安全能力凭证。
-
-> 先在游戏里踩一次坑，再在真实交易前避开它。
+一张可以探索的 Web3 学习地图。课程土地用于建立基础，回执池塘用于核对链上结果，安全训练场用于练习识别漏洞和交易风险，铁匠铺把知识问答的成果记录为装备。
 
 ## 五章安全旅程
 
@@ -86,6 +94,9 @@ web3world 希望把这条学习路径变成一段可以探索、可以验证、�
 | 全屏农场探索 | WASD、方向键、点击寻路、碰撞、镜头跟随和地点交互 |
 | 九格课程田 | 一格一课程、一课一种子，按顺序解锁与成长 |
 | 三门首发课程 | Web3 通识、Monad 基础、智能合约 |
+| 第四块安全课程田 | 独立标记与安全训练场入口 |
+| 连续日夜 | 同一地图中连续变化，24 秒完成一天，日月位于地图顶部天空 |
+| 铁匠铺 | 三道知识题、三件像素装备、锻造解锁和装备穿脱 |
 | 动态种植反馈 | 开荒、播种、发芽、开花、结果、收获七阶段 |
 | 回执池塘 | 普通练习与 Monad Testnet 真实交易，10 种鱼类图鉴 |
 | 成长档案 | EXP、课程果实、种子、完成状态与四类 NFT 徽章 |
@@ -178,7 +189,7 @@ flowchart LR
 
 ## 技术架构
 
-- **前端**：Next.js 16、React 19、DOM/CSS 像素场景
+- **前端**：Next.js 16、React 19、DOM/CSS 像素场景、Three.js 安全训练场模型
 - **Cloudflare 运行时**：Vinext、Workers、Static Assets
 - **数据库**：Cloudflare D1、Drizzle ORM
 - **链交互**：Viem、Monad Testnet
@@ -196,6 +207,8 @@ npm run dev
 ```
 
 默认访问地址为 `http://localhost:3000`。
+
+只查看地图与本地交互，可以访问 `/?preview=home`。预览不会保存学习进度，连续日夜默认开启，不需要分别打开白天和黑夜页面。钱包、链上铸造及登录接口仍需要相应服务配置。
 
 > `scripts/init-d1.sql` 会删除并重建本地数据表，只能在新的、可丢弃的本地 D1 状态上执行；不要对已有 `.wrangler` 数据重复运行。需要隔离本地数据时，可设置 `MONAD_FARM_PERSIST_PATH`，并在 Wrangler D1 命令中使用相同的 `--persist-to` 路径。
 
@@ -229,6 +242,15 @@ npm run contract:compile
 ```
 
 `npm test` 会先进行生产构建，再执行状态机、探索交互、课程成长、钓鱼、后端数据流程与安全模块测试（规则引擎、SignGuard、安全进度、审计报告、安全数据层）。
+
+本地运行生产构建：
+
+```bash
+npm run build
+npm start -- --hostname 127.0.0.1 --port 3012
+```
+
+重新构建后需要重启生产服务器，再刷新浏览器。旧进程引用的 JS/CSS 文件名可能与新构建不一致，造成资源 404、样式丢失或空白页面。
 
 > Windows 提示：`npm ci` 在缺少 Visual Studio C++ 工具链时会因为 `better-sqlite3` 的隐式 node-gyp 构建而报错。
 > 它自带 `prebuilds/` 预编译二进制，运行期并不需要重新编译，因此本地可用
@@ -303,7 +325,7 @@ npm run contract:deploy:testnet
 
 ## 当前边界与下一步
 
-当前版本已经完成三门课程、九格田前三区域、钱包连接、钓鱼上链和课程徽章铸造。学习过程保存在浏览器本地；领取徽章时，完成状态会在钱包签名后同步至 D1，由平台验证并发起链上铸造。
+原项目的三门课程、钱包连接、钓鱼上链和课程徽章流程继续保留。本版本新增第四块安全课程田、安全训练场与铁匠铺，并补充连续昼夜与模型、布局、动画兼容性修复。学习和装备状态保存在浏览器本地；领取徽章还需要钱包、服务端数据库及链上配置，不应把本地演示当作真实铸造成功。
 
 后续方向包括：
 

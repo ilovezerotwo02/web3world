@@ -121,7 +121,7 @@ test("harvesting Web3 unlocks the Monad course plot and keeps the contract plot 
       [1, "web3", "active"],
       [2, "monad", "locked"],
       [3, "contract", "locked"],
-      [4, null, "reserved"],
+      [4, "security", "locked"],
       [5, null, "reserved"],
       [6, null, "reserved"],
       [7, null, "reserved"],
@@ -129,6 +129,20 @@ test("harvesting Web3 unlocks the Monad course plot and keeps the contract plot 
       [9, null, "reserved"],
     ],
   );
+});
+
+test("the fourth land slot is Web3 security and follows the training-ground state", () => {
+  const slots = courseGridSlots(false);
+  assert.deepEqual(slots[3].course, {
+    id: "security",
+    order: 4,
+    title: "Web3 安全",
+    seed: "安全种子",
+    crop: "防护结晶",
+  });
+  assert.equal(slots[3].status, "locked");
+  assert.equal(courseGridSlots(false, false, false, false, false, "active")[3].status, "active");
+  assert.equal(courseGridSlots(false, false, false, false, false, "harvested")[3].status, "harvested");
 });
 
 test("completion rewards are idempotent", () => {

@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "node scripts/run-vinext.mjs dev",
     "build": "node scripts/run-vinext.mjs build",
-    "start": "node scripts/run-vinext.mjs start",
+    "start": "node scripts/start-web3world.mjs",
     "test": "npm run build && tsx --test",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern .vinext --ignore-pattern .wrangler",
     "db:generate": "drizzle-kit generate",
@@ -17,10 +17,12 @@
     "contract:deploy:testnet": "node scripts/deploy-badge.mjs"
   },
   "dependencies": {
+    "@types/three": "^0.186.0",
     "drizzle-orm": "0.45.2",
     "next": "^16.3.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "three": "^0.186.1",
     "viem": "^2.55.10"
   },
   "devDependencies": {

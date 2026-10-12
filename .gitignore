@@ -43,6 +43,10 @@ next-env.d.ts
 *.tsbuildinfo
 .dev-server.log
 .dev-server.err.log
+.prod-server.log
+.prod-server.err.log
+/.playwright-cli/
+/output/playwright/
 /.wrangler/
 /outputs/
 /work/
