@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./docs/assets/web3world-map.png" alt="web3world：课程田、铁匠铺与 Web3 安全训练场" width="100%" />
+  <img src="./docs/assets/web3world-logo.png" alt="web3world logo" width="60%" />
 </p>
 
 <h1 align="center">web3world</h1>
