@@ -22,11 +22,9 @@
 ## 介绍视频
 
 <p align="center">
-  <a href="./docs/intro.mp4">
-    <img src="./docs/intro-cover.png" alt="web3world 30 秒介绍视频封面：像素农场中的危机潜伏" width="72%" />
-  </a>
+  <img src="./docs/intro-loop.gif" alt="web3world 玩法循环演示：像素农场探索" width="72%" />
   <br />
-  <sub>🎬 30 秒看懂 web3world —— 点击封面观看</sub>
+  <sub>▶ 自动循环播放 · <a href="./docs/intro.mp4">观看完整 30 秒视频（含声音）</a></sub>
 </p>
 
 ## 农场里有什么
